@@ -113,6 +113,7 @@ def parse_kantor_data(url):
     """.strip()
     return kantor_info
 
+# Metoda odpowiada za aktualizowanie danych wszystkich kantorów w regularnych odstępach czasowych.
 def update_all_kantors():
     for kantor_name, url in urls.items():
         try:
@@ -125,6 +126,7 @@ def update_all_kantors():
     scheduler.start()
 update_all_kantors()
 
+ # Metoda wyświetla główne menu użytkownikowi z opcjami wyboru.
 def show_main_menu(update: Update, context: CallbackContext) -> None:
     context.user_data['message_shown'] = False
     keyboard = [
@@ -142,7 +144,7 @@ def show_kantors(update: Update, context: CallbackContext) -> None:
     reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
     update.message.reply_text('🏦 Wybierz kantor:', reply_markup=reply_markup)
 
-
+# Metoda wyświetla listę dostępnych walut, umożliwiając użytkownikowi wybór interesującej go waluty.
 def show_currencies(update: Update, context: CallbackContext) -> None:
     selected_currency = update.message.text if 'selected_currency' not in context.user_data else context.user_data['selected_currency']
     currencies = list(set(db.get_all_currencies()))

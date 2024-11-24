@@ -2,11 +2,19 @@ import sqlite3
 from datetime import datetime
 
 class Database:
+    """
+    Inicjalizuje połączenie z bazą danych SQLite o nazwie podanej w parametrze.
+    Tworzy tabelę, jeśli jeszcze nie istnieje.
+    """
     def __init__(self, db_name='exchange_rates.db'):
         self.conn = sqlite3.connect(db_name, check_same_thread=False)
         self.cursor = self.conn.cursor()
         self.create_table()
 
+    """
+    Tworzy tabelę 'exchange_rates', jeśli jeszcze nie istnieje.
+    Tabela przechowuje informacje o kursach walut, adresach kantorów i komentarzach.
+    """
     def create_table(self):
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS exchange_rates (
@@ -25,6 +33,21 @@ class Database:
         ''')
         self.conn.commit()
 
+
+    """
+    Aktualizuje lub dodaje kurs wymiany dla określonego kantoru i waluty.
+    Jeśli wpis dla danej waluty i kantoru już istnieje, zostaje zastąpiony nowymi danymi.
+        
+    Argumenty:
+    - name: Nazwa kantoru
+    - currency: Kod waluty (np. USD, EUR)
+    - buy_price: Cena zakupu waluty
+    - sell_price: Cena sprzedaży waluty
+    - address: Adres kantoru
+    - latitude: Szerokość geograficzna kantoru
+    - longitude: Długość geograficzna kantoru
+    - comment: Opcjonalny komentarz dotyczący kursu lub kantoru
+    """
     def update_exchange_rate(self, name, currency, buy_price, sell_price, address, latitude, longitude, comment):
         currency = currency.strip('*')
         now = datetime.now()
@@ -74,9 +97,19 @@ class Database:
             'best_sell': best_sell
         }
 
+    """
+    Pobiera unikalną listę wszystkich walut dostępnych w bazie danych.
+        
+    Zwraca:
+    Lista kodów walut (np. ['USD', 'EUR', 'GBP']).
+    """
     def get_all_currencies(self):
+        
         self.cursor.execute('SELECT DISTINCT currency FROM exchange_rates')
         return [row[0] for row in self.cursor.fetchall()]
 
+    """
+    Zamknięcie połączenia z bazą danych.
+    """
     def close(self):
         self.conn.close()
