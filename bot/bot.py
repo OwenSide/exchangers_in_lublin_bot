@@ -183,9 +183,7 @@ def show_currencies(update: Update, context: CallbackContext) -> None:
         update.message.reply_text('💱 Wybierz walutę, aby zobaczyć najlepsze kursy:', reply_markup=reply_markup)
         context.user_data['message_shown'] = True
 
-
-
-
+# Metoda pokazuje najlepszy kurs zakupu i sprzedaży dla wybranej waluty wraz z dodatkowymi szczegółami.
 def show_best_rate(update: Update, context: CallbackContext) -> None:
     currency = clean_currency_name(update.message.text) 
     best_rate = db.get_best_rate(currency)
@@ -285,10 +283,12 @@ def handle_location(update: Update, context: CallbackContext) -> None:
 
     update.message.reply_text(response, parse_mode='Markdown', disable_web_page_preview=True)
 
+# Metoda usuwa emotikony i nadmiarowe znaki z nazwy waluty, aby uzyskać czysty tekst.
 def clean_currency_name(currency_name):
     cleaned_name = emoji.replace_emoji(currency_name, replace='').strip()
     return cleaned_name
 
+# Metoda obsługuje wybór użytkownika z głównego menu i przekierowuje do odpowiednich funkcji.
 def handle_main_menu_selection(update: Update, context: CallbackContext) -> None:
     selection = update.message.text
     selection_cleaned = clean_currency_name(selection) 
@@ -308,6 +308,7 @@ def handle_main_menu_selection(update: Update, context: CallbackContext) -> None
     else:
         update.message.reply_text("📋 Proszę wybrać opcję z menu głównego.")
 
+# Metoda obsługuje wybór konkretnego kantoru i wyświetla jego szczegóły.
 def handle_kantor_selection(update: Update, context: CallbackContext) -> None:
     kantor_name = update.message.text
     if kantor_name in urls:

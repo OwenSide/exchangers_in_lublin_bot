@@ -73,6 +73,17 @@ class Database:
         ''', (kantor_name,))
         return self.cursor.fetchall()
 
+
+    """
+    Znajduje najlepszy kurs zakupu (najwyższy) i sprzedaży (najniższy) dla podanej waluty.
+    
+    Argumenty:
+    - currency: Kod waluty (np. USD, EUR).
+        
+    Zwraca:
+    Słownik z najlepszym kursem zakupu ('best_buy') i sprzedaży ('best_sell'),
+    każdy zawiera dane: (name, buy_price, sell_price, address).
+    """
     def get_best_rate(self, currency):
         self.cursor.execute(''' 
             SELECT name, buy_price, sell_price, address 
