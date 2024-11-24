@@ -57,6 +57,15 @@ class Database:
         ''', (name, currency, buy_price, sell_price, address, latitude, longitude, comment, now))
         self.conn.commit()
 
+    """
+    Pobiera wszystkie kursy wymiany dla określonej waluty wraz z adresami kantorów.
+    
+    Argumenty:
+    - currency: Kod waluty, dla której mają zostać pobrane dane (np. USD, EUR)
+    
+    Zwraca:
+    Lista krotek (name, buy_price, sell_price, address).
+    """
     def get_all_rates_with_address(self, currency):
         self.cursor.execute('''
             SELECT name, buy_price, sell_price, address
@@ -65,6 +74,16 @@ class Database:
         ''', (currency,))
         return self.cursor.fetchall()
 
+
+    """
+    Pobiera kursy wymiany dla określonego kantoru.
+    
+    Argumenty:
+    - kantor_name: Nazwa kantoru, dla którego mają zostać pobrane dane.
+    
+    Zwraca:
+    Lista krotek (currency, buy_price, sell_price, address, comment).
+    """
     def get_rates_for_kantor(self, kantor_name):
         self.cursor.execute(''' 
             SELECT currency, buy_price, sell_price, address, comment

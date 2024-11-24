@@ -41,6 +41,7 @@ currency_emojis = {
     '1 MYR': '🇲🇾', '1 MXN': '🇲🇽',
 }
 
+# Metoda odpowiada za pobieranie współrzędnych geograficznych na podstawie adresu za pomocą geolokatora.
 def get_coordinates_from_address(address: str):
     geolocator = Nominatim(user_agent="OwenSide")
     location = geolocator.geocode(address)
@@ -211,12 +212,13 @@ def show_best_rate(update: Update, context: CallbackContext) -> None:
 
     update.message.reply_text(response, parse_mode='Markdown', disable_web_page_preview=True)
 
-
+# Metoda prosi użytkownika o wysłanie swojej lokalizacji, aby znaleźć najbliższy kantor.
 def request_user_location(update: Update, context: CallbackContext) -> None:
     keyboard = [[KeyboardButton("📍 Wyślij moją lokalizację", request_location=True)]]
     reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
     update.message.reply_text("📍 Proszę wyślij swoją lokalizację, aby znaleźć najbliższy kantor.", reply_markup=reply_markup)
 
+# Metoda znajduje najbliższy kantor w stosunku do lokalizacji użytkownika, obliczając odległość.
 def find_nearest_kantor(user_location):
     user_coords = (user_location.latitude, user_location.longitude)
         
@@ -236,7 +238,8 @@ def find_nearest_kantor(user_location):
             nearest_kantor = (kantor_name, kantor_address, distance)
         
     return nearest_kantor
-    
+
+# Metoda obsługuje lokalizację przesłaną przez użytkownika i wyświetla najbliższy kantor wraz z informacjami.
 def handle_location(update: Update, context: CallbackContext) -> None:
     user_location = update.message.location
     if not user_location:
