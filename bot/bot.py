@@ -135,7 +135,7 @@ def show_main_menu(update: Update, context: CallbackContext) -> None:
     reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
     update.message.reply_text('📋 Wybierz opcję z menu głównego:', reply_markup=reply_markup)
 
-
+# Metoda wyświetla listę dostępnych kantorów, które użytkownik może wybrać.
 def show_kantors(update: Update, context: CallbackContext) -> None:
     keyboard = [[KeyboardButton(name)] for name in urls.keys()]
     keyboard.append([KeyboardButton("⬅️ Wróć do menu głównego")])
